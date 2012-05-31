@@ -122,7 +122,11 @@ JMImageCache *_sharedCache = nil;
 
 
 - (void) removeImageForURL:(NSString *)url {
-	[super removeObjectForKey:keyForURL(url)];
+  [super removeObjectForKey:url];
+  NSError *error = nil;
+  if (![[NSFileManager defaultManager] removeItemAtPath:cachePathForURL(url) error:&error]) {
+      NSLog(@"~~ JMImageCache: cant remove cached image file (%@) ~~", error);
+  }
 }
 
 
